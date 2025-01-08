@@ -35,26 +35,35 @@ public:
     ~Studentas() {}
 
     friend istream& operator>>(istream& cin, Studentas& studentas) {
-        cout << "Įveskite vardą: ";
+        cout << "?veskite vard?: ";
         cin >> studentas.vardas;
-        cout << "Įveskite pavardę: ";
+        cout << "?veskite pavard?: ";
         cin >> studentas.pavarde;
 
-        cout << "Įveskite namų darbų rezultatus (baigti įvedus -1): ";
+        cout << "?veskite nam? darb? rezultatus (baigti ?vedus -1, generuoti atsitiktiniu pazymius -2): ";
         int nd;
-        while (cin >> nd && nd != -1)
-        {
-            if (0< nd && nd <= 10) {
-                studentas.namuDarbai.push_back(nd);
-            }
-            else {
-                cout << "Įvestas blogas pažymys, veskite dar kartą: ";
+        if (cin >> nd && nd == -2) {
+            for (int i = 0; i < 10; i++)
+            {
+                srand(static_cast<unsigned int>(std::time(nullptr)));
+                studentas.namuDarbai.push_back(rand() % 10 + 1);
+                studentas.egzaminoRezultatas = rand() % 10 + 1;
             }
         }
-
-        cout << "Įveskite egzamino rezultatą: ";
-        cin >> studentas.egzaminoRezultatas;
-
+        else {
+            while (cin >> nd && nd != -1)
+            {
+                if (0< nd && nd <= 10) {
+                    studentas.namuDarbai.push_back(nd);
+                }
+                else {
+                    cout << "?vestas blogas pažymys, veskite dar kart?: ";
+                }
+            }
+            cout << "?veskite egzamino rezultat?: ";
+            cin >> studentas.egzaminoRezultatas;
+        }
+     
         return cin;
     }
 
@@ -96,16 +105,16 @@ int main()
         Studentas studentas;
         cin >> studentas;
         int vidMed;
-        cout << "Ar norite skaičiuoti galutinį balą pagal vidurkį ar medianą? (1 - vidurkį | 2 - medianą): ";
+        cout << "Ar norite skai?iuoti galutin? bal? pagal vidurk? ar median?? (1 - vidurk? | 2 - median?): ";
         cin >> vidMed;
         studentas.skaiciuotiGalutini(vidMed);
         studentai.push_back(studentas);
 
-        cout << "Ar norite pridėti dar vieną studentą? (t/n): ";
+        cout << "Ar norite prid?ti dar vien? student?? (t/n): ";
         cin >> ar;
     } while (ar == 't');
 
-    cout << "Pavardė        Vardas         Galutinis(Vid.)" << endl;
+    cout << "Pavard?        Vardas         Galutinis(Vid.)" << endl;
     cout << "-------------------------------------------------" << endl;
     for (const auto& studentas : studentai) {
         cout << studentas << endl;
